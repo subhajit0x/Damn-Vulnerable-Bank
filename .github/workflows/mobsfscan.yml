@@ -16,8 +16,8 @@ jobs:
     - name: Install MobSF Scanner
       run: pip install mobsfscan
 
-    - name: Run MobSF Scan on Damn-Vulnerable-Bank folder
-      run: mobsfscan Damn-Vulnerable-Bank/ --json -o results.json
+    - name: Run MobSF Scan on Damn-Vulnerable-Bank/app directory
+      run: mobsfscan DamnVulnerableBank/app/ --json -o results.json
 
     - name: Cat MobSF results
       run: cat results.json
