@@ -3,7 +3,7 @@ name: MobSF Scan Workflow
 on:
   push:
     branches:
-      - main
+      - master
 
 jobs:
   mobsf-scan:
