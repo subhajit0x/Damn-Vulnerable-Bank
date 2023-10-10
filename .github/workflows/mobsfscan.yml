@@ -17,4 +17,25 @@ jobs:
       run: pip install mobsfscan
 
     - name: Run MobSF Scan on Damn-Vulnerable-Bank/app directory
-      run: mobsfscan path https://github.com/subhajit0x/Damn-Vulnerable-Bank/tree/master/DamnVulnerableBank/app  
+      run: mobsfscan path https://github.com/subhajit0x/Damn-Vulnerable-Bank/tree/master/DamnVulnerableBank/app  --json -o results.json
+
+    - name: Cat MobSF results
+      run: cat results.json
+
+    - name: Encode results to Base64
+      id: encode_results
+      run: echo "::set-output name=base64_content::$(base64 -w 0 results.json)"
+
+    - name: Decode and set as PR body
+      id: decode_results
+      run: echo "::set-output name=content::$(echo '${{ steps.encode_results.outputs.base64_content }}' | base64 --decode)"
+
+    - name: Create Pull Request with MobSF Scan Results
+      uses: peter-evans/create-pull-request@v3
+      with:
+        commit-message: Add MobSF scan results
+        title: MobSF Scan Results
+        body: ${{ steps.decode_results.outputs.content }}
+        branch: mobsf-scan-results
+        path: results.json
+
